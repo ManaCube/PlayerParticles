@@ -3,6 +3,7 @@ package dev.esophose.playerparticles.api;
 import dev.esophose.playerparticles.PlayerParticles;
 import dev.esophose.playerparticles.manager.DataManager;
 import dev.esophose.playerparticles.manager.GuiManager;
+import dev.esophose.playerparticles.manager.ParticleGroupPresetManager;
 import dev.esophose.playerparticles.manager.ParticleManager;
 import dev.esophose.playerparticles.particles.ConsolePPlayer;
 import dev.esophose.playerparticles.particles.FixedParticleEffect;
@@ -23,11 +24,14 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import dev.esophose.playerparticles.util.inputparser.InputParser;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -614,6 +618,18 @@ public final class PlayerParticlesAPI {
             return new ArrayList<>();
 
         return pplayer.getParticleGroups().values();
+    }
+
+    public ParticleGroup loadParticleGroup(ConfigurationSection groupSection) {
+        return playerParticles.getManager(ParticleGroupPresetManager.class).loadParticleGroup(groupSection);
+    }
+
+    public ParticleGroup loadParticleGroup(String groupName, ConfigurationSection groupSection) {
+        return playerParticles.getManager(ParticleGroupPresetManager.class).loadParticleGroup(groupName, groupSection);
+    }
+
+    public ParticlePair loadParticlePair(int id, ConfigurationSection particleSection) {
+        return playerParticles.getManager(ParticleGroupPresetManager.class).loadParticlePair(id, particleSection);
     }
 
     //endregion

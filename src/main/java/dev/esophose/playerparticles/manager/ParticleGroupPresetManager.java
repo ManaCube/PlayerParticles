@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.bukkit.Bukkit;
@@ -93,101 +94,42 @@ public class ParticleGroupPresetManager extends Manager {
                         String permission = "";
                         boolean allowPermissionOverride = false;
                         ConfigurationSection groupSection = presetsSection.getConfigurationSection(groupName);
+                        ParticleGroup particleGroup = loadParticleGroup(groupName, groupSection);
 
-                        Set<String> particleKeys = groupSection.getKeys(false);
-                        for (String stringId : particleKeys) {
-                            if (stringId.equalsIgnoreCase("display-name")) {
-                                displayName = HexUtils.colorify(groupSection.getString(stringId));
+                        for (String key : groupSection.getKeys(false)) {
+                            if (key.equalsIgnoreCase("display-name")) {
+                                displayName = HexUtils.colorify(groupSection.getString(key));
                                 continue;
                             }
 
-                            if (stringId.equalsIgnoreCase("gui-icon")) {
-                                guiIcon = Material.matchMaterial(groupSection.getString(stringId));
+                            if (key.equalsIgnoreCase("gui-icon")) {
+                                guiIcon = Material.matchMaterial(groupSection.getString(key));
                                 continue;
                             }
 
-                            if (stringId.equalsIgnoreCase("gui-slot")) {
-                                guiSlot = groupSection.getInt(stringId);
+                            if (key.equalsIgnoreCase("gui-slot")) {
+                                guiSlot = groupSection.getInt(key);
                                 continue;
                             }
 
-                            if (stringId.equalsIgnoreCase("lore")) {
+                            if (key.equalsIgnoreCase("lore")) {
                                 lore = groupSection.getStringList("lore");
                                 lore.replaceAll(HexUtils::colorify);
                                 continue;
                             }
 
-                            if (stringId.equalsIgnoreCase("permission")) {
-                                permission = groupSection.getString(stringId);
+                            if (key.equalsIgnoreCase("permission")) {
+                                permission = groupSection.getString(key);
                                 continue;
                             }
 
-                            if (stringId.equalsIgnoreCase("allow-permission-override")) {
-                                allowPermissionOverride = groupSection.getBoolean(stringId);
+                            if (key.equalsIgnoreCase("allow-permission-override")) {
+                                allowPermissionOverride = groupSection.getBoolean(key);
                                 continue;
                             }
-
-                            ConfigurationSection particleSection = groupSection.getConfigurationSection(stringId);
-
-                            int id = Integer.parseInt(stringId);
-                            ParticleEffect effect = new InputParser(null, new String[] { particleSection.getString("effect") }).next(ParticleEffect.class);
-                            ParticleStyle style = new InputParser(null, new String[] { particleSection.getString("style") }).next(ParticleStyle.class);
-
-                            if (effect == null) {
-                                PlayerParticles.getInstance().getLogger().severe("Invalid effect name: '" + particleSection.getString("effect") + "'!");
-                                continue;
-                            }
-
-                            if (style == null) {
-                                PlayerParticles.getInstance().getLogger().severe("Invalid style name: '" + particleSection.getString("style") + "'!");
-                                continue;
-                            }
-
-                            Material itemData = null;
-                            Material blockData = null;
-                            OrdinaryColor colorData = null;
-                            NoteColor noteColorData = null;
-
-                            String dataString = particleSection.getString("data");
-                            if (dataString != null && !dataString.isEmpty()) {
-                                String[] args = dataString.split(" ");
-                                InputParser inputParser = new InputParser(null, args);
-
-                                if (effect.hasProperty(ParticleProperty.COLORABLE)) {
-                                    if (effect == ParticleEffect.NOTE) {
-                                        noteColorData = inputParser.next(NoteColor.class);
-                                        if (noteColorData == null) {
-                                            PlayerParticles.getInstance().getLogger().severe("Invalid note: '" + dataString + "'!");
-                                            continue;
-                                        }
-                                    } else {
-                                        colorData = inputParser.next(OrdinaryColor.class);
-                                        if (colorData == null) {
-                                            PlayerParticles.getInstance().getLogger().severe("Invalid color: '" + dataString + "'!");
-                                            continue;
-                                        }
-                                    }
-                                } else if (effect.hasProperty(ParticleProperty.REQUIRES_MATERIAL_DATA)) {
-                                    if (effect == ParticleEffect.BLOCK || effect == ParticleEffect.FALLING_DUST) {
-                                        blockData = inputParser.next(Material.class);
-                                        if (blockData == null || !blockData.isBlock()) {
-                                            PlayerParticles.getInstance().getLogger().severe("Invalid block: '" + dataString + "'!");
-                                            continue;
-                                        }
-                                    } else if (effect == ParticleEffect.ITEM) {
-                                        itemData = inputParser.next(Material.class);
-                                        if (itemData == null || itemData.isBlock()) {
-                                            PlayerParticles.getInstance().getLogger().severe("Invalid item: '" + dataString + "'!");
-                                            continue;
-                                        }
-                                    }
-                                }
-                            }
-
-                            particles.put(id, new ParticlePair(null, id, effect, style, itemData, blockData, colorData, noteColorData));
                         }
 
-                        presets.add(new ParticleGroupPreset(displayName, guiIcon, guiSlot, lore, permission, allowPermissionOverride, new ParticleGroup(groupName, particles)));
+                        presets.add(new ParticleGroupPreset(displayName, guiIcon, guiSlot, lore, permission, allowPermissionOverride, particleGroup));
                     }
                 }
 
@@ -216,6 +158,84 @@ public class ParticleGroupPresetManager extends Manager {
             ex.printStackTrace();
             this.playerParticles.getLogger().severe("An error occurred while parsing the preset_groups.yml file!");
         }
+    }
+
+    public ParticleGroup loadParticleGroup(ConfigurationSection groupSection) {
+        return loadParticleGroup(ParticleGroup.DEFAULT_NAME, groupSection);
+    }
+
+    public ParticleGroup loadParticleGroup(String groupName, ConfigurationSection groupSection) {
+        Map<Integer, ParticlePair> particles = new ConcurrentHashMap<>();
+
+        for (String stringId : groupSection.getKeys(false)) {
+            try {
+                int id = Integer.parseInt(stringId);
+                ParticlePair pair = loadParticlePair(id, groupSection.getConfigurationSection(stringId));
+                if (pair != null) particles.put(id, pair);
+            } catch (Exception e) {
+                // Skip, not integer
+            }
+        }
+
+        return new ParticleGroup(groupName, particles);
+    }
+
+    public ParticlePair loadParticlePair(int id, ConfigurationSection particleSection) {
+        ParticleEffect effect = new InputParser(null, new String[] { particleSection.getString("effect") }).next(ParticleEffect.class);
+        ParticleStyle style = new InputParser(null, new String[] { particleSection.getString("style") }).next(ParticleStyle.class);
+
+        if (effect == null) {
+            PlayerParticles.getInstance().getLogger().severe("Invalid effect name: '" + particleSection.getString("effect") + "'!");
+            return null;
+        }
+
+        if (style == null) {
+            PlayerParticles.getInstance().getLogger().severe("Invalid style name: '" + particleSection.getString("style") + "'!");
+            return null;
+        }
+
+        Material itemData = null;
+        Material blockData = null;
+        OrdinaryColor colorData = null;
+        NoteColor noteColorData = null;
+
+        String dataString = particleSection.getString("data");
+        if (dataString != null && !dataString.isEmpty()) {
+            String[] args = dataString.split(" ");
+            InputParser inputParser = new InputParser(null, args);
+
+            if (effect.hasProperty(ParticleProperty.COLORABLE)) {
+                if (effect == ParticleEffect.NOTE) {
+                    noteColorData = inputParser.next(NoteColor.class);
+                    if (noteColorData == null) {
+                        PlayerParticles.getInstance().getLogger().severe("Invalid note: '" + dataString + "'!");
+                        return null;
+                    }
+                } else {
+                    colorData = inputParser.next(OrdinaryColor.class);
+                    if (colorData == null) {
+                        PlayerParticles.getInstance().getLogger().severe("Invalid color: '" + dataString + "'!");
+                        return null;
+                    }
+                }
+            } else if (effect.hasProperty(ParticleProperty.REQUIRES_MATERIAL_DATA)) {
+                if (effect == ParticleEffect.BLOCK || effect == ParticleEffect.FALLING_DUST) {
+                    blockData = inputParser.next(Material.class);
+                    if (blockData == null || !blockData.isBlock()) {
+                        PlayerParticles.getInstance().getLogger().severe("Invalid block: '" + dataString + "'!");
+                        return null;
+                    }
+                } else if (effect == ParticleEffect.ITEM) {
+                    itemData = inputParser.next(Material.class);
+                    if (itemData == null || itemData.isBlock()) {
+                        PlayerParticles.getInstance().getLogger().severe("Invalid item: '" + dataString + "'!");
+                        return null;
+                    }
+                }
+            }
+        }
+
+        return new ParticlePair(null, id, effect, style, itemData, blockData, colorData, noteColorData);
     }
 
     @Override
