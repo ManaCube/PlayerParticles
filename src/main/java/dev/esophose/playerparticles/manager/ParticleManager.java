@@ -165,6 +165,15 @@ public class ParticleManager extends Manager implements Listener, Runnable {
     }
 
     /**
+     * Gets the pplayers map
+     *
+     * @return The real pplayers map
+     */
+    public Map<UUID, PPlayer> getPPlayerMap() {
+        return this.particlePlayers;
+    }
+
+    /**
      * Adds a PPlayer to the loaded map
      *
      * @param pplayer The PPlayer to add

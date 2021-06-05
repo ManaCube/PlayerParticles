@@ -2,7 +2,9 @@ package dev.esophose.playerparticles.particles;
 
 import dev.esophose.playerparticles.styles.ParticleStyle;
 import dev.esophose.playerparticles.util.ParticleUtils;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -215,8 +217,18 @@ public class PPlayer {
      * @param style The style to match
      * @return A List of ParticlePairs with a matching style
      */
-    public Set<ParticlePair> getActiveParticlesForStyle(ParticleStyle style) {
-        return this.getActiveParticles().stream().filter(x -> x.getStyle().equals(style)).collect(Collectors.toSet());
+    public List<ParticlePair> getActiveParticlesForStyle(ParticleStyle style) {
+        List<ParticlePair> particlePairs = new ArrayList<>();
+
+        for (ParticlePair particlePair : getActiveParticles())
+        {
+            if (particlePair.getStyle().equals(style))
+            {
+                particlePairs.add(particlePair);
+            }
+        }
+
+        return particlePairs;
     }
 
     /**

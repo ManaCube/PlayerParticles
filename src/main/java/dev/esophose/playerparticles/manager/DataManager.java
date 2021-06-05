@@ -91,10 +91,7 @@ public class DataManager extends Manager {
      * @return The PPlayer from cache
      */
     public PPlayer getPPlayer(UUID playerUUID) {
-        for (PPlayer pp : this.playerParticles.getManager(ParticleManager.class).getPPlayers())
-            if (pp.getUniqueId().equals(playerUUID))
-                return pp;
-        return null;
+        return this.playerParticles.getManager(ParticleManager.class).getPPlayerMap().get(playerUUID);
     }
 
     /**

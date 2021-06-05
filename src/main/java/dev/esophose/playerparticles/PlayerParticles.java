@@ -6,13 +6,19 @@
 
 package dev.esophose.playerparticles;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import dev.esophose.playerparticles.gui.hook.PlayerChatHook;
 import dev.esophose.playerparticles.hook.ParticlePlaceholderExpansion;
 import dev.esophose.playerparticles.hook.PlaceholderAPIHook;
 import dev.esophose.playerparticles.hook.WorldGuardHook;
 import dev.esophose.playerparticles.manager.CommandManager;
 import dev.esophose.playerparticles.manager.ConfigurationManager;
-import dev.esophose.playerparticles.manager.ConfigurationManager.Setting;
 import dev.esophose.playerparticles.manager.DataManager;
 import dev.esophose.playerparticles.manager.DataMigrationManager;
 import dev.esophose.playerparticles.manager.LocaleManager;
@@ -24,14 +30,7 @@ import dev.esophose.playerparticles.manager.PermissionManager;
 import dev.esophose.playerparticles.manager.PluginUpdateManager;
 import dev.esophose.playerparticles.particles.listener.PPlayerCombatListener;
 import dev.esophose.playerparticles.particles.listener.PPlayerMovementListener;
-import dev.esophose.playerparticles.util.LegacyMetrics;
 import dev.esophose.playerparticles.util.NMSUtil;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import org.bstats.bukkit.MetricsLite;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author Esophose
@@ -70,14 +69,6 @@ public class PlayerParticles extends JavaPlugin {
         pm.registerEvents(new PPlayerMovementListener(), this);
         pm.registerEvents(new PPlayerCombatListener(), this);
         pm.registerEvents(new PlayerChatHook(), this);
-
-        if (Setting.SEND_METRICS.getBoolean()) {
-            if (NMSUtil.getVersionNumber() > 7) {
-                new MetricsLite(this, 3531);
-            } else {
-                new LegacyMetrics(this);
-            }
-        }
 
         if (PlaceholderAPIHook.enabled())
             new ParticlePlaceholderExpansion(this).register();

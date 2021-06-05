@@ -8,3 +8,6 @@ target/
 /docs/
 /images/
 /LocaleTransformer
+out/PlayerParticles v7.19.jar
+.project
+.classpath

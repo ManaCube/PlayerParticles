@@ -16,6 +16,7 @@ import dev.esophose.playerparticles.particles.preset.ParticleGroupPresetPage;
 import dev.esophose.playerparticles.styles.ParticleStyle;
 import dev.esophose.playerparticles.util.HexUtils;
 import dev.esophose.playerparticles.util.inputparser.InputParser;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,7 +42,7 @@ public class ParticleGroupPresetManager extends Manager {
     
     public static final String FILE_NAME = "preset_groups.yml";
     
-    private Map<Integer, ParticleGroupPresetPage> presetGroupPages;
+    private Int2ObjectOpenHashMap<ParticleGroupPresetPage> presetGroupPages;
 
     public ParticleGroupPresetManager(PlayerParticles playerParticles) {
         super(playerParticles);
@@ -52,7 +53,7 @@ public class ParticleGroupPresetManager extends Manager {
      */
     @Override
     public void reload() {
-        this.presetGroupPages = new HashMap<>();
+        this.presetGroupPages = new Int2ObjectOpenHashMap<>();
         
         File pluginDataFolder = PlayerParticles.getInstance().getDataFolder();
         if (!pluginDataFolder.exists())
@@ -249,9 +250,9 @@ public class ParticleGroupPresetManager extends Manager {
      * @param pplayer The PPlayer
      * @return a Map of page numbers to preset pages for a PPlayer
      */
-    public Map<Integer, ParticleGroupPresetPage> getPresetGroupPages(PPlayer pplayer) {
+    public Int2ObjectOpenHashMap<ParticleGroupPresetPage> getPresetGroupPages(PPlayer pplayer) {
         // Hide pages the player doesn't have access to anything for
-        Map<Integer, ParticleGroupPresetPage> presetGroupPages = new HashMap<>();
+        Int2ObjectOpenHashMap<ParticleGroupPresetPage> presetGroupPages = new Int2ObjectOpenHashMap<>();
 
         List<Integer> pageNumbers = this.presetGroupPages.keySet().stream().sorted().collect(Collectors.toList());
         int pageNumber = 1;
@@ -273,7 +274,7 @@ public class ParticleGroupPresetManager extends Manager {
             presetGroupPages.put(1, new ParticleGroupPresetPage(localeManager.getLocaleMessage("gui-load-a-preset-group"), Collections.emptyList(), extraBorder));
         }
 
-        return Collections.unmodifiableMap(presetGroupPages);
+        return presetGroupPages;
     }
 
     /**
