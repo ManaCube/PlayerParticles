@@ -26,8 +26,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.destroystokyo.paper</groupId>
-			<artifactId>paper</artifactId>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot</artifactId>
 			<version>1.16.1-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
@@ -61,6 +61,12 @@
 			<version>2.10.6</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/libs/PlaceholderAPI.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>it.unimi.dsi</groupId>
+			<artifactId>fastutil</artifactId>
+			<version>8.2.1</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
