@@ -4,7 +4,7 @@ version: '${project.version}'
 api-version: '1.13'
 description: Display particles around your player and blocks using customized styles and data!
 author: Esophose
-authors: [Roree]
+authors: [Roree, Boomclaw]
 website: https://www.spigotmc.org/resources/playerparticles.40261/
 softdepend: [PlaceholderAPI, WorldGuard, WorldEdit]
 commands:
