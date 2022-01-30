@@ -6,17 +6,17 @@
 
 	<groupId>com.esophose.particles</groupId>
 	<artifactId>PlayerParticles</artifactId>
-	<version>7.2.1</version>
+	<version>7.2.2</version>
 	<name>PlayerParticles</name>
 
 	<repositories>
 		<repository>
 			<id>spigotmc-repo</id>
-			<url>http://hub.spigotmc.org/nexus/content/groups/public</url>
+			<url>https://hub.spigotmc.org/nexus/content/groups/public</url>
 		</repository>
 		<repository>
 			<id>vault-repo</id>
-			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
+			<url>https://nexus.hc.to/content/repositories/pub_releases</url>
 		</repository>
 		<repository>
 			<id>code-mc</id>
@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.4</version>
+			<version>1.18.22</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

@@ -57,6 +57,15 @@ public class ParticlePair {
     }
 
     /**
+     * Updates the particle's owner
+     *
+     * @param uuid The new owner uuid
+     */
+    public void setOwnerUUID(UUID uuid) {
+            this.ownerUUID = uuid;
+    }
+
+    /**
      * Sets the player's particle effect
      * 
      * @param effect The player's new particle effect
