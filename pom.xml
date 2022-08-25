@@ -6,7 +6,7 @@
 
 	<groupId>com.esophose.particles</groupId>
 	<artifactId>PlayerParticles</artifactId>
-	<version>7.2.2</version>
+	<version>7.2.3</version>
 	<name>PlayerParticles</name>
 
 	<repositories>
