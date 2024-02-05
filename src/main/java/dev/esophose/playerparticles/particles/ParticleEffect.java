@@ -326,11 +326,11 @@ public enum ParticleEffect {
         int count = pparticle.isDirectional() ? 0 : 1;
 
         if (effect.hasProperty(ParticleProperty.REQUIRES_MATERIAL_DATA)) {
-            effect.display(particle.getSpawnMaterial(), pparticle.getXOff(), pparticle.getYOff(), pparticle.getZOff(), pparticle.getSpeed(), 1, pparticle.getLocation(false), isLongRange, owner);
+            effect.display(particle.getSpawnMaterial(), pparticle.getXOff(), pparticle.getYOff(), pparticle.getZOff(), particle.getParticleSpeed() > -1 ? particle.getParticleSpeed() : pparticle.getSpeed(), 1, pparticle.getLocation(false), isLongRange, owner);
         } else if (effect.hasProperty(ParticleProperty.COLORABLE)) {
             effect.display(particle.getSpawnColor(), pparticle.getLocation(true), isLongRange, owner);
         } else {
-            effect.display(pparticle.getXOff(), pparticle.getYOff(), pparticle.getZOff(), pparticle.getSpeed(), count, pparticle.getLocation(false), isLongRange, owner);
+            effect.display(pparticle.getXOff(), pparticle.getYOff(), pparticle.getZOff(), particle.getParticleSpeed() > -1 ? particle.getParticleSpeed() : pparticle.getSpeed(), count, pparticle.getLocation(false), isLongRange, owner);
         }
     }
 

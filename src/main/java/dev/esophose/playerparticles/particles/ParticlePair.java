@@ -15,6 +15,9 @@ import dev.esophose.playerparticles.util.StringPlaceholders;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 
@@ -30,6 +33,10 @@ public class ParticlePair {
     private Material blockMaterial;
     private OrdinaryColor color;
     private NoteColor noteColor;
+
+    @Getter
+    @Setter
+    private float particleSpeed = -1;
 
     public ParticlePair(UUID ownerUUID, int id, ParticleEffect effect, ParticleStyle style, Material itemMaterial, Material blockMaterial, OrdinaryColor color, NoteColor noteColor) {
         this.ownerUUID = ownerUUID;
