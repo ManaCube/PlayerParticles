@@ -1,4 +1,4 @@
-package dev.esophose.playerparticles.locale;
+﻿package dev.esophose.playerparticles.locale;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

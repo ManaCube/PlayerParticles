@@ -19,8 +19,10 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 
+@Getter
 public class ParticlePair {
 
     private UUID ownerUUID;
@@ -33,8 +35,13 @@ public class ParticlePair {
     private Material blockMaterial;
     private OrdinaryColor color;
     private NoteColor noteColor;
+    private float f;
+    private int i;
+    private Color fromColor;
+    private Color toColor;
+    private float size;
+    private int arrivalTime;
 
-    @Getter
     @Setter
     private float particleSpeed = -1;
 

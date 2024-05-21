@@ -8,8 +8,11 @@ import dev.esophose.playerparticles.particles.ParticleEffect;
 import dev.esophose.playerparticles.particles.data.ParticleColor;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
@@ -61,6 +64,16 @@ public abstract class ParticleSpawner {
      * @throws ParticleDataException If the particle effect does not require additional data or if the data type is incorrect
      */
     public abstract void display(ParticleEffect particleEffect, Material spawnMaterial, double offsetX, double offsetY, double offsetZ, double speed, int amount, Location center, boolean isLongRange, Player owner);
+
+    public abstract void display(ParticleEffect particleEffect, Color fromColor, Color toColor, float size, double offsetX, double offsetY, double offsetZ, double speed, int amount, Location center, boolean isLongRange, Player owner);
+
+    public abstract void display(ParticleEffect particleEffect, float f, double offsetX, double offsetY, double offsetZ, double speed, int amount, Location center, boolean isLongRange, Player owner);
+
+    public abstract void display(ParticleEffect particleEffect, int i, double offsetX, double offsetY, double offsetZ, double speed, int amount, Location center, boolean isLongRange, Player owner);
+
+    public abstract void displayVibration(ParticleEffect particleEffect, Location destination, int arrivalTime, double offsetX, double offsetY, double offsetZ, double speed, int amount, Location center, boolean isLongRange, Player owner);
+
+    public abstract void displayVibration(ParticleEffect particleEffect, Entity destination, int arrivalTime, double offsetX, double offsetY, double offsetZ, double speed, int amount, Location center, boolean isLongRange, Player owner);
 
     /**
      * Gets a List of Players within the particle display range

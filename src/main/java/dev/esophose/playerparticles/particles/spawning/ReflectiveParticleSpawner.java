@@ -13,8 +13,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class ReflectiveParticleSpawner extends ParticleSpawner {
@@ -53,6 +55,36 @@ public class ReflectiveParticleSpawner extends ParticleSpawner {
             return;
 
         new ParticlePacket(particleEffect, offsetX, offsetY, offsetZ, speed, amount, true, spawnMaterial).sendTo(center, this.getPlayersInRange(center, isLongRange, owner));
+    }
+
+    @Override
+    public void display(ParticleEffect particleEffect, Color fromColor, Color toColor, float size, double offsetX, double offsetY, double offsetZ, double speed, int amount, Location center, boolean isLongRange, Player owner)
+    {
+        throw new UnsupportedOperationException("This particle spawner doesnt support displaying color transitions");
+    }
+
+    @Override
+    public void display(ParticleEffect particleEffect, float f, double offsetX, double offsetY, double offsetZ, double speed, int amount, Location center, boolean isLongRange, Player owner)
+    {
+        throw new UnsupportedOperationException("ReflectiveParticleSpawner is deprecated");
+    }
+
+    @Override
+    public void display(ParticleEffect particleEffect, int i, double offsetX, double offsetY, double offsetZ, double speed, int amount, Location center, boolean isLongRange, Player owner)
+    {
+        throw new UnsupportedOperationException("ReflectiveParticleSpawner is deprecated");
+    }
+
+    @Override
+    public void displayVibration(ParticleEffect particleEffect, Location destination, int arrivalTime, double offsetX, double offsetY, double offsetZ, double speed, int amount, Location center, boolean isLongRange, Player owner)
+    {
+        throw new UnsupportedOperationException("ReflectiveParticleSpawner is deprecated");
+    }
+
+    @Override
+    public void displayVibration(ParticleEffect particleEffect, Entity destination, int arrivalTime, double offsetX, double offsetY, double offsetZ, double speed, int amount, Location center, boolean isLongRange, Player owner)
+    {
+        throw new UnsupportedOperationException("ReflectiveParticleSpawner is deprecated");
     }
 
     /**
