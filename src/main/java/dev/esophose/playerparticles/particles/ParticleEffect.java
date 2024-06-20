@@ -186,8 +186,17 @@ public enum ParticleEffect
 		this.enabledByDefault = enabledByDefault;
 		this.properties = Arrays.asList(properties);
 
-		if (enumName.equals("DUST") && (BukkitVersion.getVersion() == BukkitVersion.v1_19 || BukkitVersion.getVersion() == BukkitVersion.v1_20))
-			enumName = "REDSTONE";
+		if (enumName.equals("DUST"))
+		{
+			try
+			{
+				Particle.valueOf("DUST");
+				PlayerParticles.getInstance().getLogger().info("Detected legacy DUST particle");
+			} catch (Exception e) {
+				enumName = "REDSTONE";
+				PlayerParticles.getInstance().getLogger().info("Detected 1.19+ server version, using 'REDSTONE' instead of 'DUST'");
+			}
+		}
 
 		// Will be null if this server's version doesn't support this particle type
 		if (NMSUtil.getVersionNumber() > 8)
