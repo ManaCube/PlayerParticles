@@ -1,5 +1,6 @@
 package dev.esophose.playerparticles.particles;
 
+import com.ayanix.panther.impl.bukkit.compat.BukkitVersion;
 import com.google.common.collect.ObjectArrays;
 import dev.esophose.playerparticles.PlayerParticles;
 import dev.esophose.playerparticles.config.CommentedFileConfiguration;
@@ -185,10 +186,14 @@ public enum ParticleEffect
 		this.enabledByDefault = enabledByDefault;
 		this.properties = Arrays.asList(properties);
 
+		if (enumName.equals("DUST") && (BukkitVersion.getVersion() == BukkitVersion.v1_19 || BukkitVersion.getVersion() == BukkitVersion.v1_20))
+			enumName = "REDSTONE";
+
 		// Will be null if this server's version doesn't support this particle type
 		if (NMSUtil.getVersionNumber() > 8)
 		{
-			this.internalEnum = Stream.of(Particle.values()).filter(x -> x.name().equals(this.name()) || x.name().equals(enumName)).findFirst().orElse(null);
+			String finalEnumName = enumName;
+			this.internalEnum = Stream.of(Particle.values()).filter(x -> x.name().equals(this.name()) || x.name().equals(finalEnumName)).findFirst().orElse(null);
 			this.supported = this.internalEnum != null;
 		} else
 		{
