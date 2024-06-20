@@ -4,6 +4,7 @@
 build/
 target/
 *.iml
+out/*
 /bin/
 /docs/
 /images/

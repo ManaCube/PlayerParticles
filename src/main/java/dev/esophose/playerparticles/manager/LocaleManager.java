@@ -4,12 +4,7 @@ import dev.esophose.playerparticles.PlayerParticles;
 import dev.esophose.playerparticles.config.CommentedFileConfiguration;
 import dev.esophose.playerparticles.hook.PlaceholderAPIHook;
 import dev.esophose.playerparticles.locale.EnglishLocale;
-import dev.esophose.playerparticles.locale.FrenchLocale;
-import dev.esophose.playerparticles.locale.GermanLocale;
 import dev.esophose.playerparticles.locale.Locale;
-import dev.esophose.playerparticles.locale.RussianLocale;
-import dev.esophose.playerparticles.locale.SimplifiedChineseLocale;
-import dev.esophose.playerparticles.locale.VietnameseLocale;
 import dev.esophose.playerparticles.manager.ConfigurationManager.Setting;
 import dev.esophose.playerparticles.particles.PPlayer;
 import dev.esophose.playerparticles.util.HexUtils;
@@ -86,11 +81,6 @@ public class LocaleManager extends Manager {
             localeDirectory.mkdirs();
 
         this.registerLocale(new EnglishLocale());
-        this.registerLocale(new FrenchLocale());
-        this.registerLocale(new GermanLocale());
-        this.registerLocale(new RussianLocale());
-        this.registerLocale(new SimplifiedChineseLocale());
-        this.registerLocale(new VietnameseLocale());
 
         File targetLocaleFile = new File(this.playerParticles.getDataFolder() + "/locale", Setting.LOCALE.getString() + ".lang");
         if (!targetLocaleFile.exists()) {
